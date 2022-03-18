@@ -1,0 +1,44 @@
+ <?php 
+ /* PRIMERO COLOCAMOS OB START AL INICIO DEL HTML QUE QUEREMOS RENDERIZAR */
+  
+  ob_start();
+  
+
+   ?>  
+ 
+ 
+ 
+ 
+ 
+ <?php 
+
+/* Codigo para exportar en PDF ( domPDF) */
+
+/* ESTA PARTE LA COLOCAMOS AL FINAL DEL CODIGO HTML QUE QUEREMOS RENDERIZAR */
+
+  $html = ob_get_clean();
+  
+
+   require_once "libreria/dompdf/autoload.inc.php";  ===> DEBEMOS DESCARGAR LA LIBREIRA DE DOMPDF PARA REQUERIRLA 
+
+  use Dompdf\Dompdf;
+  $dompdf = new Dompdf();
+
+  $options = $dompdf->getOptions();
+  $options->set(array('isRemoteEnabled' => true));
+  $dompdf->setOptions($options);
+
+  $dompdf->loadHtml("Aca va la variable html creada");
+  $dompdf->setPaper('letter');
+  //$dompdf->setPaper('A4', 'landscape');
+	ob_clean();
+  $dompdf->render();
+
+  $dompdf->stream("archivo.pdf", array("Attachment" => false));
+  exit(0)
+
+  /* FIN Codigo para exportar en PDF ( domPDF) */
+
+
+
+   ?>
